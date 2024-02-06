@@ -1,4 +1,3 @@
----
 name: Publish Artifacts auto
 on:
   workflow_dispatch:
