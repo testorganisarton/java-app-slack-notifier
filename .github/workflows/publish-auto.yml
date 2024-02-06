@@ -4,7 +4,7 @@ on:
   push:
 
 env:
-  GITHUB_TOKEN: ${{ secrets.MAVEN_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
    publish-artifacts:
