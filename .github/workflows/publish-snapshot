@@ -1,0 +1,84 @@
+name: Publish Artifacts auto
+on:
+  workflow_dispatch:
+(*   push: *)
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+   publish-artifacts:
+     name: Publish Artifacts
+     runs-on: ubuntu-latest
+     permissions:
+       id-token: write
+       contents: read
+       packages: write
+     steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Java
+        uses: actions/setup-java@v4.0.0
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Run Test Cases
+        run: |
+          mvn clean install
+
+      - name: Dry Run Build
+        run: |
+          mvn --batch-mode deploy -Dmaven.deploy.skip=true -DskipTests
+
+      - name: Publish Artifacts
+        run: |
+
+          # Fetch package versions from pom file
+          VERSION=$(grep -m 1 '<version>' pom.xml | sed -E 's/.*<version>([^<]+)<\/version>.*/\1/')
+          echo "VERSION=${VERSION}"
+
+          # Check if version contains "SNAPSHOT"
+          if [[ "$VERSION" == *SNAPSHOT* ]]; then
+            echo "Version contains SNAPSHOT, checking remote versions."
+
+            # Fetch organization name
+            ORG=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 1)
+            echo "ORG=${ORG}"
+
+            # Fetch package name from pom file
+            PACKAGE_NAME=$(grep -m 1 '<groupId>' pom.xml | sed -E 's/.*<groupId>([^<]+)<\/groupId>.*/\1/').$(grep -m 1 '<artifactId>' pom.xml | sed -E 's/.*<artifactId>([^<]+)<\/artifactId>.*/\1/')
+            echo "PACKAGE_NAME=${PACKAGE_NAME}"
+            
+            # Fetch package versions from Remote Registry
+            REMOTE_VERSIONS=$(curl -L \
+                              -H "Accept: application/vnd.github+json" \
+                              -H "Authorization: Bearer ${{env.GITHUB_TOKEN}}" \
+                              -H "X-GitHub-Api-Version: 2022-11-28" \
+                              "https://api.github.com/orgs/${ORG}/packages/maven/${PACKAGE_NAME}/versions")
+
+            echo "REMOTE_VERSIONS=${REMOTE_VERSIONS}"
+
+            # Check if the Package already exists in Remote Registry
+            if echo "$REMOTE_VERSIONS" | jq -r ".[].name" | grep -q "${VERSION}"; then
+              echo "Found version ${VERSION} already exists in the REMOTE_VERSIONS."
+            
+              # Extract Artifact ID of the matching version
+              ARTIFACT_ID=$(echo "$REMOTE_VERSIONS" | jq -r ".[] | select(.name == \"${VERSION}\") | .id")
+              echo "ARTIFACT_ID=${ARTIFACT_ID}"
+              
+              # Override Earlier Version by Deleting.
+              curl -L \
+              -X DELETE \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{env.GITHUB_TOKEN}}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/orgs/${ORG}/packages/maven/${PACKAGE_NAME}/versions/${ARTIFACT_ID}"
+
+              echo "Version ${VERSION} deleted successfully."
+            fi
+          fi
+
+          # Publish Latest Changes to Github Packages.
+          mvn --batch-mode deploy -DskipTests
