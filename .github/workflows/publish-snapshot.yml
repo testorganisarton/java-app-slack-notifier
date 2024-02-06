@@ -1,7 +1,6 @@
-name: Publish Artifacts auto
+name: Publish Artifacts only Snapshot
 on:
   workflow_dispatch:
-(*   push: *)
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
