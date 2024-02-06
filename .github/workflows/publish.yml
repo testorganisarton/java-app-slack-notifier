@@ -1,10 +1,12 @@
 name: Publish package to GitHub Packages
 on:
   workflow_dispatch:
+env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   publish-override:
     runs-on: ubuntu-latest 
-    # permissions: write-all
+    permissions: write-all
     # permissions: 
     #   id-token: write
     #   contents: write
@@ -16,11 +18,11 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      # - name: Publish package 
-      #   run: |
-      #     # echo "//registry/package/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
-      #     # mvn --batch-mode deploy --settings .github/settings.xml
-      #     # curl -X DELETE -u ${{github.actor}}:${{ secrets.GITHUB_TOKEN }} "https://maven.pkg.github.com/saikumar-tv/github_test_packages/com/com.mycompany.app.my-app/package/1.1-SNAPSHOT"
+      - name: Publish package 
+        run: |
+          # echo "//registry/package/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+          mvn --batch-mode deploy
+          # curl -X DELETE -u ${{github.actor}}:${{ secrets.GITHUB_TOKEN }} "https://maven.pkg.github.com/saikumar-tv/github_test_packages/com/com.mycompany.app.my-app/package/1.1-SNAPSHOT"
 
       - name: override organization
         run: |
