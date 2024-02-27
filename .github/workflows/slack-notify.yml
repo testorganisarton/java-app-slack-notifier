@@ -1,6 +1,7 @@
 name: publish reports to slack
 on:
   workflow_dispatch:
+  push:
 env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
