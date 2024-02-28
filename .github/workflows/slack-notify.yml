@@ -23,16 +23,17 @@ jobs:
         run: |
           # mvn clean verify
           # mvn site
-          mvn surefire-report:report
+          mvn simple-java-app-test-report:report
           ls -la
           pwd
           ls -la target/
+          ls -la target/site/
           ls -la target/surefire-reports/
           cat target/surefire-reports/com.mycompany.app.AppTest.txt
           # echo "REPORT=$(cat target/surefire-reports/com.mycompany.app.AppTest.txt)" >> $GITHUB_ENV
           
-      - name: Zip reports
-        run: zip -r reports.zip target/surefire-reports
+      # - name: Zip reports
+      #   run: zip -r reports.zip target/surefire-reports
 
       # - name: Post to a Slack channel
       #   id: slack
@@ -64,7 +65,7 @@ jobs:
       - name: List XML Files
         id: list-xml-files
         run: |
-          XML_FILES=$(find target/surefire-reports -type f -name "*.xml")
+          XML_FILES=$(find target/site -type f -name "*.html")
           echo "::set-output name=xml_files::$XML_FILES"
 
       - name: Send XML Files to Slack
