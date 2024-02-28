@@ -74,15 +74,15 @@
           </execution>
         </executions>
       </plugin>
-    </plugins>
-  </build>
-  <reporting>
-    <plugins>
+          <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
         <version>3.2.5</version>
       </plugin>
     </plugins>
+    </plugins>
+  </build>
+  <reporting>
   </reporting>
 </project>
