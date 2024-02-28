@@ -23,7 +23,7 @@ jobs:
         run: |
           # mvn clean verify
           # mvn site
-          mvn simple-java-app-test-report:report
+          mvn surefire-report:report
           ls -la
           pwd
           ls -la target/
