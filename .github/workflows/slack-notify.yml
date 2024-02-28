@@ -21,7 +21,8 @@ jobs:
           
       - name: Run tests
         run: |
-          mvn test
+          mvn clean verify
+          mvn site
           ls -la
           pwd
           ls -la target/surefire-reports/
