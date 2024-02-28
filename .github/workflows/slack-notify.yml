@@ -26,7 +26,7 @@ jobs:
           pwd
           ls -la target/surefire-reports/
           cat target/surefire-reports/com.mycompany.app.AppTest.txt
-          echo "REPORT=$(cat target/surefire-reports/com.mycompany.app.AppTest.txt)" >> $GITHUB_ENV
+          # echo "REPORT=$(cat target/surefire-reports/com.mycompany.app.AppTest.txt)" >> $GITHUB_ENV
           
       - name: Zip reports
         run: zip -r reports.zip target/surefire-reports
