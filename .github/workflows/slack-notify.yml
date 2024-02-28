@@ -25,6 +25,8 @@ jobs:
           ls -la
           pwd
           ls -la target/surefire-reports/
+          cat target/surefire-reports/com.mycompany.app.AppTest.txt
+          echo "REPORT=$(cat target/surefire-reports/com.mycompany.app.AppTest.txt)" >> $GITHUB_ENV
 
       - name: Post to a Slack channel
         id: slack
@@ -37,7 +39,7 @@ jobs:
           channel-id: 'C06LP66NS1F'
           payload: |
             {
-              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "text": "GitHub Action build result: ${{env.REPORT}  }}",
               "blocks": [
                 {
                   "type": "section",
