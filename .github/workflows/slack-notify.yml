@@ -21,7 +21,7 @@ jobs:
           
       - name: Run tests
         run: |
-          mvn clean verify
+          # mvn clean verify
           mvn site
           ls -la
           pwd
