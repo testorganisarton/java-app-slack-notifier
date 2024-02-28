@@ -15,16 +15,18 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           
-      - name: Build package 
-        run: |
-          mvn -B -DskipTests clean package
+      # - name: Build package 
+      #   run: |
+      #     mvn -B -DskipTests clean package
           
       - name: Run tests
         run: |
           # mvn clean verify
-          mvn site
+          # mvn site
+          mvn surefire-report:report
           ls -la
           pwd
+          ls -la target/
           ls -la target/surefire-reports/
           cat target/surefire-reports/com.mycompany.app.AppTest.txt
           # echo "REPORT=$(cat target/surefire-reports/com.mycompany.app.AppTest.txt)" >> $GITHUB_ENV
