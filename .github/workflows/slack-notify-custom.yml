@@ -59,7 +59,6 @@ jobs:
             ":white_check_mark::white_check_mark: All Tests are Succeeded :white_check_mark::white_check_mark:\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html | ${{env.REPO_NAME}} : ${{env.IMAGE_TAG}} >
             **Status:** ${{ job.status }}
             **Commit:** ${{ github.sha }} (${{ github.ref }})
-            **Duration:** ${{ workflow_info.outputs.duration }}
             :tada: Tests passed successfully! "
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
