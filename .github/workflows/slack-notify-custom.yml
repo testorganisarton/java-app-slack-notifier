@@ -1,0 +1,79 @@
+---
+name: CI Pipeline
+on:
+  workflow_dispatch:
+
+env:
+  REPO_NAME: merchant-service
+  
+jobs:
+  test-cases:
+    name: Run Test Cases
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # - name: Setup Java
+    #   uses: actions/setup-java@v4
+    #   with:
+    #     java-version: '17'
+    #     distribution: 'adopt'
+
+    # - name: Run Test Cases
+    #   run: |
+    #     mvn -s $GITHUB_WORKSPACE/.github/maven/settings.xml surefire-report:report
+    #     ls -la target/site/
+    #   env:
+    #     USER_NAME:  ${{github.actor}}
+    #     ACCESS_TOKEN: ${{secrets.MAVEN_TOKEN}}
+
+    # - name: Create Docker Image Tag
+    #   run: echo "IMAGE_TAG=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+
+    # - name: Authenticating Google Cloud
+    #   id: 'auth'
+    #   uses: 'google-github-actions/auth@v2'
+    #   with:
+    #     project_id: '${{ secrets.GCP_PROJECT_ID }}'
+    #     credentials_json: '${{ secrets.GCP_SECRET_KEY }}'
+    
+    # - name: Upload Test Reports
+    #   uses: 'google-github-actions/upload-cloud-storage@v2'
+    #   with:
+    #     path: './target/site/'
+    #     destination: '${{ secrets.TEST_REPORTS_BUCKET }}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}'
+    #     parent: false
+
+    - name: Post to a Slack channel
+      id: slack
+      uses: slackapi/slack-github-action@v1.25.0
+      with:
+        channel-id: '${{ secrets.SLACK_CHANNEL }}'
+        # slack-message: "Successfully Generated Test Reports: ${{ job.status }}\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html|View Test Reports>"
+        slack-message: "Successfully Generated Test Reports: ${{ job.status }}\n[View Test Reports](https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html)"
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        TEST_REPORTS_BUCKET: ${{ secrets.TEST_REPORTS_BUCKET }}
+
+    # - name: Build Docker Image
+    #   run: |
+    #     mvn -s $GITHUB_WORKSPACE/.github/maven/settings.xml clean install -DskipTests
+    #     docker build -t us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/gcf-artifacts/${{env.REPO_NAME}}:${{env.IMAGE_TAG}} -f ./build-container/Dockerfile .
+    #   env:
+    #     USER_NAME: ${{github.actor}}
+    #     ACCESS_TOKEN: ${{secrets.MAVEN_TOKEN}}
+
+    # - name: Running Vulnerability Scan
+    #   uses: aquasecurity/trivy-action@master
+    #   with:
+    #     image-ref: us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/gcf-artifacts/${{env.REPO_NAME}}:${{env.IMAGE_TAG}}
+    #     format: 'table'
+    #     exit-code: '0'
+    #     ignore-unfixed: true
+    #     vuln-type: 'os,library'
+    #     severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
