@@ -32,8 +32,8 @@ jobs:
     #     USER_NAME:  ${{github.actor}}
     #     ACCESS_TOKEN: ${{secrets.MAVEN_TOKEN}}
 
-    # - name: Create Docker Image Tag
-    #   run: echo "IMAGE_TAG=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+    - name: Create Docker Image Tag
+      run: echo "COMMIT_SHA=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
 
     # - name: Authenticating Google Cloud
     #   id: 'auth'
@@ -58,6 +58,7 @@ jobs:
         slack-message: | 
             ":white_check_mark::white_check_mark: All Tests are Succeeded :white_check_mark::white_check_mark:\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html | ${{env.REPO_NAME}} : ${{env.IMAGE_TAG}} >
             *Status:* ${{ job.status }}
+            *SHA:* ${{ secrets.COMMIT_SHA }}
             *Commit:* ${{ github.sha }} (${{ github.ref }})
             :tada: Test Reports Generated Successfully :tada:"
       env:
