@@ -59,6 +59,7 @@ jobs:
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         TEST_REPORTS_BUCKET: ${{ secrets.TEST_REPORTS_BUCKET }}
+        IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
 
     # - name: Build Docker Image
     #   run: |
