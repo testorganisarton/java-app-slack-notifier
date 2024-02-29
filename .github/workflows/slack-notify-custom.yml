@@ -1,5 +1,5 @@
 ---
-name: CI Pipeline
+name: Slack Custom Notify
 on:
   workflow_dispatch:
 
@@ -55,7 +55,7 @@ jobs:
       with:
         channel-id: '${{ secrets.SLACK_CHANNEL }}'
         # slack-message: "Successfully Generated Test Reports: ${{ job.status }}\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html|View Test Reports>"
-        slack-message: "Successfully Generated Test Reports: ${{ job.status }}\n[View Test Reports](https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html)"
+        slack-message: "Successfully Generated Test Reports: ${{ job.status }}\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html> | VIEW"
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         TEST_REPORTS_BUCKET: ${{ secrets.TEST_REPORTS_BUCKET }}
