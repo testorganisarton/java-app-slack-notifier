@@ -58,7 +58,7 @@ jobs:
         slack-message: | 
             ":white_check_mark::white_check_mark: All Tests are Succeeded :white_check_mark::white_check_mark:\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html | ${{env.REPO_NAME}} : ${{env.IMAGE_TAG}} >
             *Status:* ${{ job.status }}
-            *SHA:* ${{ env.COMMIT_SHA }}
+            *SHA:* `${{ env.COMMIT_SHA }}`
             *Commit:* ${{ github.sha }} (${{ github.ref }})
             :tada: Test Reports Generated Successfully :tada:"
       env:
