@@ -49,6 +49,14 @@ jobs:
     #     destination: '${{ secrets.TEST_REPORTS_BUCKET }}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}'
     #     parent: false
 
+    - name: Run Test Cases
+      id: run-test-cases
+      env:
+        USER_NAME:  ${{github.actor}}
+        ACCESS_TOKEN: ${{secrets.MAVEN_TOKEN}}
+      run: |
+        whoami
+        
     - name: Post to a Slack channel
       id: slack
       uses: slackapi/slack-github-action@v1.25.0
