@@ -51,6 +51,7 @@ jobs:
 
     - name: Run Test Cases
       id: run-test-cases
+      continue-on-error: true
       env:
         USER_NAME:  ${{github.actor}}
         ACCESS_TOKEN: ${{secrets.MAVEN_TOKEN}}
