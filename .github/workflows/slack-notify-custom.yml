@@ -56,7 +56,7 @@ jobs:
         channel-id: '${{ secrets.SLACK_CHANNEL }}'
         # slack-message: "Successfully Generated Test Reports: ${{ job.status }}\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html|View Test Reports>"
         slack-message: | 
-            ":white_check_mark::white_check_mark: All Tests are Succeeded :white_check_mark::white_check_mark:\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html | ${{env.REPO_NAME}} : ${{env.IMAGE_TAG}} >
+            "\n:white_check_mark::white_check_mark: All Tests are Succeeded :white_check_mark::white_check_mark:\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html | ${{env.REPO_NAME}} : ${{env.IMAGE_TAG}} >
             *Status:* ${{ job.status }}
             *SHA:* `${{ env.COMMIT_SHA }}`
             *Commit:* ${{ github.sha }} (${{ github.ref }})
