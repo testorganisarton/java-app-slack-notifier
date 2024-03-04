@@ -70,8 +70,7 @@ jobs:
           *Report Type:* `Surefire`
           *COMMIT:* `${{ env.COMMIT_SHA }}`
           *${{env.REPO_NAME}}:* <https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/surefire/${{env.REPO_NAME}}/${{env.COMMIT_SHA}}/surefire-report.html | View>
-          Branch name: ${{ github.ref_name }}
-          Full ref: ${{ github.ref }}
+          Branch name: '${{ github.ref_name }}'
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         TEST_REPORTS_BUCKET: ${{ secrets.TEST_REPORTS_BUCKET }}
