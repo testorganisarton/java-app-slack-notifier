@@ -56,7 +56,7 @@ jobs:
         USER_NAME:  ${{github.actor}}
         ACCESS_TOKEN: ${{secrets.MAVEN_TOKEN}}
       run: |
-        whoami
+        ,fjn,hnbrjt
         
     - name: Post to a Slack channel
       id: slack
