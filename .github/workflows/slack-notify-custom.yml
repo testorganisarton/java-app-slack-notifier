@@ -51,6 +51,7 @@ jobs:
 
     - name: Run Test Cases
       id: run-test-cases
+      if: github.ref_name == 'main' || github.ref_name == 'develop' || github.ref == 'sprint/*'
       continue-on-error: true
       env:
         USER_NAME:  ${{github.actor}}
