@@ -68,9 +68,9 @@ jobs:
           :tada: *Test Reports Generated Successfully* :tada:
           *Status:* ${{ steps.run-test-cases.outcome }} | ${{ github.event.pull_request.html_url || github.event.head_commit.url }}
           *Report Type:* `Surefire`
-          *COMMIT:* `${{ env.COMMIT_SHA }}`
+          *COMMIT:* `${{ env.COMMIT_SHA }}(${{ github.ref_name }})`
           *${{env.REPO_NAME}}:* <https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/surefire/${{env.REPO_NAME}}/${{env.COMMIT_SHA}}/surefire-report.html | View>
-          Branch name: '${{ github.ref_name }}'
+    
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         TEST_REPORTS_BUCKET: ${{ secrets.TEST_REPORTS_BUCKET }}
