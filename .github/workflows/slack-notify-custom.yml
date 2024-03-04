@@ -66,7 +66,7 @@ jobs:
         # slack-message: "Successfully Generated Test Reports: ${{ job.status }}\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html|View Test Reports>"
         slack-message: |
           :tada: *Test Reports Generated Successfully* :tada:
-          *Status:* <${{ steps.run-test-cases.outcome }} | ${{ github.event.pull_request.html_url || github.event.head_commit.url }}>
+          *Status:* ${{ steps.run-test-cases.outcome }} | ${{ github.event.pull_request.html_url || github.event.head_commit.url }}
           *Report Type:* `Surefire`
           *COMMIT:* `${{ env.COMMIT_SHA }}`
           *${{env.REPO_NAME}}:* <https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/surefire/${{env.REPO_NAME}}/${{env.COMMIT_SHA}}/surefire-report.html | View>
