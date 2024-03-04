@@ -55,16 +55,16 @@ jobs:
       with:
         channel-id: '${{ secrets.SLACK_CHANNEL }}'
         # slack-message: "Successfully Generated Test Reports: ${{ job.status }}\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html|View Test Reports>"
-        slack-message: | 
-            "\n:white_check_mark::white_check_mark: All Tests are Succeeded :white_check_mark::white_check_mark:\n<https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/${{env.REPO_NAME}}/${{env.IMAGE_TAG}}/surefire-report.html | ${{env.REPO_NAME}} : ${{env.IMAGE_TAG}} >
-            *Status:* ${{ job.status }}
-            *SHA:* `${{ env.COMMIT_SHA }}`
-            *Commit:* ${{ github.sha }} (${{ github.ref }})
-            :tada: Test Reports Generated Successfully :tada:"
+        slack-message: |
+          :tada: *Test Reports Generated Successfully* :tada:
+          *Status:* ${{ steps.run-test-cases.outcome }}
+          *Report Type:* Surefire
+          *COMMIT:* `${{ env.COMMIT_SHA }}`
+          *${{env.REPO_NAME}}:* <https://storage.googleapis.com/${{env.TEST_REPORTS_BUCKET}}/surefire/${{env.REPO_NAME}}/${{env.COMMIT_SHA}}/surefire-report.html | View>
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         TEST_REPORTS_BUCKET: ${{ secrets.TEST_REPORTS_BUCKET }}
-        IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
+        COMMIT_SHA: ${{ secrets.IMAGE_TAG }}
 
     # - name: Build Docker Image
     #   run: |
